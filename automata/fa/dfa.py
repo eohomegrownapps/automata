@@ -4,6 +4,7 @@
 import copy
 import itertools
 from collections import deque
+import hashlib, base64
 
 import automata.base.exceptions as exceptions
 import automata.fa.fa as fa
@@ -226,7 +227,8 @@ class DFA(fa.FA):
     @staticmethod
     def _stringify_states(states):
         """Stringify the given set of states as a single state name."""
-        return '{{{}}}'.format(','.join(sorted(states)))
+        s = '{{{}}}'.format(','.join(sorted(states)))
+        return base64.b64encode(hashlib.md5(s.encode("utf-8")).digest()).decode("utf-8")
 
     @classmethod
     def _add_nfa_states_from_queue(cls, nfa, current_states,
